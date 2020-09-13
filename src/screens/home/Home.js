@@ -14,6 +14,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import CheckBox from "@react-native-community/checkbox";
 import Toast from "react-native-simple-toast";
 import { sendData } from "../../actions/homeAction";
+import Styles from "./styles/Styles";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -39,18 +40,12 @@ class Home extends React.Component {
   render() {
     const { loading } = this.props;
     return loading ? (
-      <ActivityIndicator style={{ flex: 1 }} />
+      <ActivityIndicator style={Styles.indicator} />
     ) : (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          marginHorizontal: RFValue(15)
-        }}
-      >
+      <View style={Styles.container}>
         <TextInput
           placeholder={"title"}
-          style={{ marginVertical: RFValue(10) }}
+          style={Styles.input}
           onChangeText={text => {
             this.setState({ title: text });
           }}
@@ -58,19 +53,19 @@ class Home extends React.Component {
         <DropDownPicker
           items={[
             {
-              label: "user1",
+              label: "User 1",
               value: "1",
-              icon: () => <Icon name="flag" size={18} color="#900" />
+              icon: () => <Icon name="user" size={18} color="#900" />
             },
             {
-              label: "user2",
+              label: "User 2",
               value: "2",
-              icon: () => <Icon name="flag" size={18} color="#900" />
+              icon: () => <Icon name="user" size={18} color="#900" />
             }
           ]}
-          defaultValue={this.state.id}
-          containerStyle={{ height: 40 }}
-          style={{ backgroundColor: "#fafafa", marginBottom: RFValue(10) }}
+          defaultValue={this.state.userId}
+          containerStyle={{ height: 50 }}
+          style={Styles.dropDownStyle}
           itemStyle={{
             justifyContent: "flex-start"
           }}
@@ -83,45 +78,29 @@ class Home extends React.Component {
             })
           }
         />
-
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <CheckBox
-            value={this.state.isSelected}
-            onValueChange={value => {
-              this.setState({ isSelected: value });
-            }}
-            style={{ height: RFValue(20), width: RFValue(20) }}
-          ></CheckBox>
-          <Text>Terms and conditions</Text>
-        </View>
-
         <TextInput
           placeholder={"description"}
           onChangeText={text => {
             this.setState({ description: text });
           }}
-          style={{
-            marginVertical: RFValue(10),
-            height: RFValue(100),
-            borderColor: "gray",
-            borderWidth: 1
-          }}
+          style={Styles.textArea}
         />
+        <View style={Styles.checkBoxstyle}>
+          <CheckBox
+            value={this.state.isSelected}
+            onValueChange={value => {
+              this.setState({ isSelected: value });
+            }}
+            style={Styles.checkBoxStyke}
+          ></CheckBox>
+          <Text style={Styles.termStyle}>Terms and conditions</Text>
+        </View>
         <TouchableOpacity
           onPress={() => {
             this.validate();
           }}
         >
-          <Text
-            style={{
-              padding: RFValue(10),
-              backgroundColor: "blue",
-              textAlign: "center",
-              color: "white"
-            }}
-          >
-            save data
-          </Text>
+          <Text style={Styles.buttonStyle}>Save Data</Text>
         </TouchableOpacity>
       </View>
     );
@@ -130,10 +109,6 @@ class Home extends React.Component {
 
 function mapStateToProps(state) {
   return { loading: state.homeReducer.loading };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {};
 }
 
 export default connect(mapStateToProps, { sendData })(Home);
